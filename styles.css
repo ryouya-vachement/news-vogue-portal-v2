@@ -163,6 +163,77 @@ button{ cursor:pointer; font-family:inherit; border:none; background:none; color
   50%{ transform:scaleY(1); opacity:1; }
 }
 
+/* ============== TODAY'S HEADLINES (LIVE) ============== */
+.today-news{
+  padding: 110px 36px;
+  border-bottom: 1px solid var(--ink);
+  background: var(--paper);
+}
+.today-list{
+  list-style: none;
+  max-width: 1180px;
+  margin: 0 auto;
+  border-top: 1px solid var(--ink);
+}
+.today-item{
+  display: grid;
+  grid-template-columns: 80px 1fr 90px;
+  gap: 24px;
+  padding: 22px 0;
+  border-bottom: 1px solid #d9d6cb;
+  align-items: baseline;
+  transition: padding-left .35s ease;
+}
+.today-item:hover{ padding-left: 12px; }
+.t-num{
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: 28px;
+}
+.t-body{ display: flex; flex-direction: column; gap: 6px; }
+.t-source{
+  font-size: 11px; letter-spacing: .25em;
+  color: var(--mid);
+}
+.t-headline{
+  font-family: var(--serif);
+  font-size: clamp(18px, 1.5vw, 24px);
+  font-weight: 700;
+  line-height: 1.3;
+  border-bottom: 1px solid transparent;
+  display: inline;
+}
+.t-headline:hover{ border-bottom-color: var(--ink); }
+.t-time{
+  font-size: 11px; letter-spacing: .25em; color: var(--mid);
+  text-align: right;
+  font-family: var(--serif);
+  font-weight: 700;
+}
+.today-loading{
+  list-style: none;
+  padding: 50px 0;
+  text-align: center;
+  color: var(--mid);
+  font-family: var(--serif-2);
+  font-style: italic;
+  font-size: 18px;
+}
+.today-loading small{
+  display:block;
+  font-family:var(--sans);
+  font-style:normal;
+  font-size:11px;
+  letter-spacing:.2em;
+  margin-top:8px;
+}
+@media (max-width: 720px){
+  .today-news{ padding: 80px 18px; }
+  .today-item{ grid-template-columns: 50px 1fr; gap: 14px; }
+  .t-num{ font-size: 22px; }
+  .t-time{ grid-column: 2; text-align:left; }
+}
+
 /* ============== EDITOR'S NOTE ============== */
 .editors-note{
   background:var(--ink); color:var(--paper);
@@ -709,6 +780,35 @@ button{ cursor:pointer; font-family:inherit; border:none; background:none; color
   .sub-form{ flex-direction:column; }
   .sub-form button{ padding: 14px 22px; }
 }
+
+/* ============== NEWS LINKS — hover affordance ============== */
+.voice h4 a,
+.col h3 a,
+.wf-list li a,
+.world-item h3 a,
+.w-sources p a,
+.panel-col h4 a,
+.timeline .t-text a,
+.ts-text h2 a{
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size .35s ease;
+  padding-bottom: 2px;
+}
+.voice h4 a:hover,
+.col h3 a:hover,
+.wf-list li a:hover,
+.world-item h3 a:hover,
+.w-sources p a:hover,
+.panel-col h4 a:hover,
+.timeline .t-text a:hover,
+.ts-text h2 a:hover{
+  background-size: 100% 1px;
+}
+.w-sources p{ margin: 0; }
+.w-sources p a{ font-family: var(--serif-2); }
 
 /* selection */
 ::selection{ background:var(--ink); color:var(--paper); }

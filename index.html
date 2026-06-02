@@ -32,7 +32,7 @@
   </div>
   <div class="ticker">
     <div class="ticker-track">
-      <span>2026.05.23 / TOKYO 21°C, MOSTLY CLEAR</span>
+      <span data-today-dot>2026.05.23</span><span> / TOKYO</span>
       <span>—</span>
       <span>NIKKEI 225  39,210.42  ▲0.4%</span>
       <span>—</span>
@@ -44,7 +44,7 @@
       <span>—</span>
       <span>A DAILY READ OF MANY VOICES</span>
       <span>—</span>
-      <span>2026.05.23 / TOKYO 21°C, MOSTLY CLEAR</span>
+      <span data-today-dot>2026.05.23</span><span> / TOKYO</span>
       <span>—</span>
       <span>NIKKEI 225  39,210.42  ▲0.4%</span>
       <span>—</span>
@@ -59,7 +59,7 @@
   <div class="hero-grid">
     <div class="hero-meta reveal">
       <span class="kicker">VOL. XII  /  ISSUE 142</span>
-      <span class="date">SATURDAY, MAY 23, 2026</span>
+      <span class="date" data-today-long>SATURDAY, MAY 23, 2026</span>
     </div>
     <h1 class="hero-title">
       <span class="line reveal">Many</span>
@@ -78,6 +78,24 @@
   <div class="scroll-cue reveal">
     <span>SCROLL</span>
     <div class="line-down"></div>
+  </div>
+</section>
+
+<!-- ============== TODAY'S HEADLINES (LIVE) ============== -->
+<section class="today-news" id="today">
+  <header class="section-head">
+    <span class="section-label reveal">TODAY  /  <span data-today-dot>—</span></span>
+    <h2 class="reveal">今日の<span class="italic">見出し。</span></h2>
+    <p class="reveal">Google ニュースから取得した、本日の主要ヘッドライン。— Live headlines fetched on page load.</p>
+  </header>
+
+  <ul class="today-list reveal" id="todayNewsList">
+    <li class="today-loading">読み込み中…</li>
+  </ul>
+
+  <div class="meta-bar reveal">
+    <span>SOURCE: GOOGLE NEWS (JA / JP)</span>
+    <span id="todayUpdatedAt">UPDATED: —</span>
   </div>
 </section>
 
