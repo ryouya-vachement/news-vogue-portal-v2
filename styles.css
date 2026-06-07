@@ -289,7 +289,68 @@ button{ cursor:pointer; font-family:inherit; border:none; background:none; color
   position:absolute; top:24px; left:24px;
   color:var(--paper); font-family:var(--serif);
   font-size:14px; letter-spacing:.3em;
+  display: flex; flex-direction: column; gap: 6px;
 }
+.ph-overlay .po-num{ font-family: var(--serif); font-size: 18px; letter-spacing: .3em; font-weight: 900; }
+.ph-overlay .po-sec{ font-family: var(--sans); font-size: 10px; letter-spacing: .3em; opacity: .75; }
+
+/* ============== SECTION PLATE (image-overlay-style label) ============== */
+.section-plate{
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 26px;
+  background: var(--ink);
+  color: var(--paper);
+  margin-bottom: 28px;
+  min-width: 200px;
+}
+.section-head.center .section-plate{
+  align-self: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.section-plate .po-num{
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: .25em;
+  line-height: 1;
+}
+.section-plate .po-sec{
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: .3em;
+  opacity: .7;
+}
+.grid-section.dark .section-plate{
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* ============== 4+ OUTLET COVERAGE LIST (in 3-col cards) ============== */
+.col-also{
+  list-style: none;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed currentColor;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.col-also li{
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.cv-src{
+  font-size: 10px;
+  letter-spacing: .2em;
+  opacity: .7;
+}
+
+/* ============== TIMELINE — widen + alts row ============== */
 .caption{
   display:block;
   margin-top: 12px;
@@ -590,8 +651,8 @@ button{ cursor:pointer; font-family:inherit; border:none; background:none; color
 .compare-panels{ position:relative; min-height: 280px; }
 .panel{
   display:none;
-  grid-template-columns: repeat(3,1fr);
-  gap: 28px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
   text-align:left;
   animation: fadeUp .55s ease both;
 }
@@ -627,22 +688,48 @@ button{ cursor:pointer; font-family:inherit; border:none; background:none; color
 .archive{ padding: 130px 36px; background:var(--ink); color:var(--paper); }
 .archive .section-label{ border-color:var(--paper); }
 .timeline{
-  list-style:none; max-width: 1080px; margin: 30px auto 0;
+  list-style:none; max-width: 1320px; margin: 30px auto 0;
 }
 .timeline li{
   display:grid;
-  grid-template-columns: 80px 130px 1fr 110px;
-  gap: 18px; align-items:center;
+  grid-template-columns: 80px 130px minmax(0, 1fr) 160px;
+  grid-template-rows: auto auto;
+  column-gap: 18px;
+  row-gap: 8px;
+  align-items: baseline;
   padding: 22px 0;
   border-bottom: 1px solid #2c2c2c;
   font-size:14px;
   transition: padding-left .35s ease;
 }
 .timeline li:hover{ padding-left: 14px; }
-.t-date{ font-family:var(--serif); font-size:22px; font-weight:700; }
-.t-cat{ font-size:11px; letter-spacing:.3em; color:var(--accent); }
-.t-text{ font-family:var(--serif-2); font-size: clamp(18px,1.4vw,22px); }
-.t-src{ font-size:11px; letter-spacing:.25em; text-align:right; color:var(--accent); }
+.timeline li > *{ min-width: 0; }
+.t-date{ font-family:var(--serif); font-size:22px; font-weight:700; grid-row: 1; grid-column: 1; }
+.t-cat{ font-size:11px; letter-spacing:.3em; color:var(--accent); grid-row: 1; grid-column: 2; }
+.t-text{
+  font-family:var(--serif-2);
+  font-size: clamp(18px,1.4vw,22px);
+  grid-row: 1; grid-column: 3;
+  line-height: 1.35;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+.t-text a{ display: inline; }
+.t-src{ font-size:11px; letter-spacing:.25em; text-align:right; color:var(--accent); grid-row: 1; grid-column: 4; }
+.t-alts{
+  grid-row: 2; grid-column: 3 / 5;
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--accent);
+  opacity: .8;
+  line-height: 1.6;
+}
+.t-alts a{
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  margin: 0 2px;
+}
+.t-alts a:hover{ border-bottom-color: currentColor; }
 
 /* ============== SUBSCRIBE ============== */
 .subscribe{ padding: 140px 36px; text-align:center; }
@@ -749,10 +836,11 @@ button{ cursor:pointer; font-family:inherit; border:none; background:none; color
   .panel.active{ grid-template-columns: 1fr; }
   .ft-cols{ grid-template-columns: 1fr 1fr; }
   .timeline li{ grid-template-columns: 60px 1fr; gap:12px; row-gap:6px; }
-  .timeline li > *{ grid-column: auto; }
+  .timeline li > *{ grid-column: auto; grid-row: auto; }
   .t-cat{ grid-row: 1; grid-column: 2; text-align:right; }
   .t-text{ grid-column: 1 / -1; }
   .t-src{ grid-column: 1 / -1; text-align:left; }
+  .t-alts{ grid-column: 1 / -1; }
 }
 @media (max-width: 720px){
   .nav-inner{
@@ -834,6 +922,7 @@ a.src-link:hover{ opacity: .55; }
 /* ============== NEWS LINKS — hover affordance ============== */
 .voice h4 a,
 .col h3 a,
+.col-also li > a,
 .wf-list li a,
 .world-item h3 a,
 .w-sources p a,
@@ -849,6 +938,7 @@ a.src-link:hover{ opacity: .55; }
 }
 .voice h4 a:hover,
 .col h3 a:hover,
+.col-also li > a:hover,
 .wf-list li a:hover,
 .world-item h3 a:hover,
 .w-sources p a:hover,

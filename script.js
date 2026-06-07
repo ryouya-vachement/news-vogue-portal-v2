@@ -228,42 +228,62 @@
   const renderThreeCol = (selector, items, baseNum, cat) => {
     const cols = document.querySelector(selector);
     if (!cols || !items.length) return;
-    cols.innerHTML = items.slice(0, 3).map((it, i) => `
-      <article class="col">
-        <span class="num">${String(baseNum + i).padStart(2, '0')}</span>
-        <span class="src">${sourceLink(it.source)}</span>
-        <h3>${linkA(it, cat)}</h3>
-        <p>posted ${escapeHtml(timeAgo(it.date))}</p>
-      </article>
-    `).join('');
+    // 3 topics × 5 outlets (1 main + 4 alternates) per col
+    const groups = [];
+    for (let i = 0; i < 3; i++) {
+      const g = items.slice(i * 5, i * 5 + 5);
+      if (g.length) groups.push(g);
+    }
+    cols.innerHTML = groups.map((g, i) => {
+      const main = g[0];
+      const alts = g.slice(1, 5);
+      const altsHtml = alts.length ? `
+        <ul class="col-also">
+          ${alts.map(a => `
+            <li><span class="cv-src">${sourceLink(a.source)}</span>${linkA(a, cat)}</li>
+          `).join('')}
+        </ul>
+      ` : '';
+      return `
+        <article class="col">
+          <span class="num">${String(baseNum + i).padStart(2, '0')}</span>
+          <span class="src">${sourceLink(main.source)}</span>
+          <h3>${linkA(main, cat)}</h3>
+          <p>posted ${escapeHtml(timeAgo(main.date))}</p>
+          ${altsHtml}
+        </article>
+      `;
+    }).join('');
   };
 
   const renderCulture = (items) => {
     if (!items.length) return;
     const ul = document.querySelector('.wf-list');
     if (ul) {
-      ul.innerHTML = items.slice(0, 4).map((it) => `
+      // 5 outlets covering culture/entertainment
+      ul.innerHTML = items.slice(0, 5).map((it) => `
         <li><span>${sourceLink(it.source)}</span>${linkA(it, 'ent')}</li>
       `).join('');
     }
     const h2 = document.querySelector('.wf-text h2');
     if (h2) h2.innerHTML = linkA(items[0], 'ent');
     const p = document.querySelector('.wf-text > p.reveal');
-    if (p) p.textContent = `${items[0].source} · ${timeAgo(items[0].date)}. Selected culture & entertainment headlines, fetched live.`;
+    if (p) p.textContent = `${items[0].source} · ${timeAgo(items[0].date)}. Five outlets' takes on today's culture & entertainment beat.`;
   };
 
   const renderWorld = (items) => {
     const list = document.querySelector('.world-list');
     if (!list || !items.length) return;
+    // 3 topics × 5 outlets (1 main + 4 subs) per world-item
     const groups = [];
     for (let i = 0; i < 3; i++) {
-      const g = items.slice(i * 4, i * 4 + 4);
+      const g = items.slice(i * 5, i * 5 + 5);
       if (!g.length) break;
       groups.push(g);
     }
     list.innerHTML = groups.map((g, i) => {
       const main = g[0];
-      const subs = g.slice(1, 4).map((s) => `
+      const subs = g.slice(1, 5).map((s) => `
         <div><span class="src">${sourceLink(s.source)}</span><p>${linkA(s, 'world')}</p></div>
       `).join('');
       return `
@@ -290,7 +310,8 @@
       if (tab) tab.textContent = label;
       const panel = document.querySelector(`.panel[data-panel="${key}"]`);
       if (!panel || !items || !items.length) return;
-      panel.innerHTML = items.slice(0, 3).map((it) => `
+      // 5 outlets per tab so each panel shows 4+ perspectives
+      panel.innerHTML = items.slice(0, 5).map((it) => `
         <div class="panel-col">
           <span class="src">${sourceLink(it.source)}</span>
           <h4>${linkA(it, cat)}</h4>
@@ -312,19 +333,35 @@
       { items: feeds.top,      cat: 'TODAY',    tag: 'nation' },
     ];
     const rows = order
-      .map(o => o.items && o.items[0] ? { ...o.items[0], _cat: o.cat, _tag: o.tag } : null)
+      .map(o => o.items && o.items[0]
+        ? { ...o.items[0], _cat: o.cat, _tag: o.tag, _feed: o.items }
+        : null)
       .filter(Boolean);
     if (!rows.length) return;
     ul.innerHTML = rows.map((it) => {
       const d = it.date
         ? `${String(it.date.getMonth() + 1).padStart(2, '0')}.${String(it.date.getDate()).padStart(2, '0')}`
         : '—';
+      // 4 alternate outlets from the same feed
+      const seen = new Set([it.source]);
+      const alts = [];
+      for (const f of (it._feed || [])) {
+        if (alts.length >= 4) break;
+        if (f.link === it.link) continue;
+        if (seen.has(f.source)) continue;
+        seen.add(f.source);
+        alts.push(f);
+      }
+      const altsHtml = alts.length ? `
+        <div class="t-alts">also covered by: ${alts.map(a => `<a href="${escapeHtml(a.link)}" target="_blank" rel="noopener noreferrer" data-cat="${escapeHtml(it._tag)}">${escapeHtml(a.source)}</a>`).join(' · ')}</div>
+      ` : '';
       return `
         <li>
           <span class="t-date">${d}</span>
           <span class="t-cat">${escapeHtml(it._cat)}</span>
           <span class="t-text">${linkA(it, it._tag)}</span>
           <span class="t-src">${sourceLink(it.source)}</span>
+          ${altsHtml}
         </li>
       `;
     }).join('');
