@@ -781,6 +781,56 @@ button{ cursor:pointer; font-family:inherit; border:none; background:none; color
   .sub-form button{ padding: 14px 22px; }
 }
 
+/* ============== OUTLET (SOURCE) LINKS ============== */
+a.src-link{
+  position: relative;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  transition: opacity .2s ease;
+  padding-bottom: 1px;
+}
+a.src-link:hover{ opacity: .55; }
+
+/* SOURCES column in footer */
+.ft-cols a[href^="http"]{
+  border-bottom: 1px solid transparent;
+}
+.ft-cols a[href^="http"]:hover{
+  border-bottom-color: var(--ink);
+}
+
+/* ============== TODAY: meta-bar additions ============== */
+.today-news .meta-bar{
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+#todayClicks{
+  font-size: 11px; letter-spacing: .25em;
+  color: var(--mid);
+}
+#resetPrefs{
+  font-family: var(--sans);
+  font-size: 10px; letter-spacing: .25em;
+  padding: 6px 12px;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  transition: background .2s ease, color .2s ease;
+}
+#resetPrefs:hover{
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* FOR YOU label gets a small accent */
+#todayLabel{
+  font-weight: 700;
+  letter-spacing: .3em;
+}
+
 /* ============== NEWS LINKS — hover affordance ============== */
 .voice h4 a,
 .col h3 a,
